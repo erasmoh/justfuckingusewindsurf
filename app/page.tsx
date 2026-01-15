@@ -1,3 +1,56 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
+const footerTitles = [
+  "Start using Windsurf now, or ask these guys first if you want...",
+  "Still not convinced? Let AI explain it to you...",
+  "Don't trust me? Ask your favorite AI...",
+  "Need more proof? These AIs got your back...",
+  "Or just ask an AI if you're still overthinking it...",
+];
+
+function AnimatedTitle() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    const currentTitle = footerTitles[currentIndex];
+    
+    if (isTyping) {
+      if (displayedText.length < currentTitle.length) {
+        const timeout = setTimeout(() => {
+          setDisplayedText(currentTitle.slice(0, displayedText.length + 1));
+        }, 40);
+        return () => clearTimeout(timeout);
+      } else {
+        const pauseTimeout = setTimeout(() => {
+          setIsTyping(false);
+        }, 3000);
+        return () => clearTimeout(pauseTimeout);
+      }
+    } else {
+      if (displayedText.length > 0) {
+        const timeout = setTimeout(() => {
+          setDisplayedText(displayedText.slice(0, -1));
+        }, 20);
+        return () => clearTimeout(timeout);
+      } else {
+        setCurrentIndex((prev) => (prev + 1) % footerTitles.length);
+        setIsTyping(true);
+      }
+    }
+  }, [displayedText, isTyping, currentIndex]);
+
+  return (
+    <p className="mb-6 text-base font-medium text-zinc-400 text-center h-6">
+      {displayedText}
+      <span className="animate-pulse">|</span>
+    </p>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
@@ -203,6 +256,67 @@ export default function Home() {
           </p>
         </div>
       </main>
+
+      {/* Ask AI section */}
+      <footer className="border-t border-zinc-800 py-12">
+        <div 
+          className="absolute inset-x-0 bottom-0 h-48 opacity-20"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #525252 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
+        <div className="relative mx-auto flex flex-col items-center justify-center px-6">
+<AnimatedTitle />
+          <div className="flex items-center gap-4">
+            <a
+              href="https://chat.openai.com/?q=As%20a%20potential%20user%2C%20I%20want%20to%20concretely%20understand%20what%20I%20will%20receive%20with%20Windsurf%20IDE%20(windsurf.com).%0A%0ADetail%20step%20by%20step%20what%20the%20editor%20includes%3A%20what%20I%20receive%2C%20how%20Cascade%20AI%20works%2C%20how%20it%20understands%20my%20codebase%2C%20multi-file%20editing%2C%20terminal%20integration%2C%20and%20how%20it%20compares%20to%20VS%20Code%20and%20Cursor.%0A%0AExplain%20it%20simply%2C%20as%20if%20you%20were%20describing%20the%20real%20experience%20of%20the%20product."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-zinc-800"
+              aria-label="Get AI summary from ChatGPT"
+            >
+              <img src="/icons/chatgpt.svg" alt="ChatGPT" className="h-7 w-7 opacity-60 invert" />
+            </a>
+            <a
+              href="https://claude.ai/new?q=As%20a%20potential%20user%2C%20I%20want%20to%20concretely%20understand%20what%20I%20will%20receive%20with%20Windsurf%20IDE%20(windsurf.com).%0A%0ADetail%20step%20by%20step%20what%20the%20editor%20includes%3A%20what%20I%20receive%2C%20how%20Cascade%20AI%20works%2C%20how%20it%20understands%20my%20codebase%2C%20multi-file%20editing%2C%20terminal%20integration%2C%20and%20how%20it%20compares%20to%20VS%20Code%20and%20Cursor.%0A%0AExplain%20it%20simply%2C%20as%20if%20you%20were%20describing%20the%20real%20experience%20of%20the%20product."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-zinc-800"
+              aria-label="Get AI summary from Claude"
+            >
+              <img src="/icons/claude.svg" alt="Claude" className="h-7 w-7 opacity-60 invert" />
+            </a>
+            {/* <a
+              href="https://gemini.google.com/app?q=As%20a%20potential%20user%2C%20I%20want%20to%20concretely%20understand%20what%20I%20will%20receive%20with%20Windsurf%20IDE%20(windsurf.com).%0A%0ADetail%20step%20by%20step%20what%20the%20editor%20includes%3A%20what%20I%20receive%2C%20how%20Cascade%20AI%20works%2C%20how%20it%20understands%20my%20codebase%2C%20multi-file%20editing%2C%20terminal%20integration%2C%20and%20how%20it%20compares%20to%20VS%20Code%20and%20Cursor.%0A%0AExplain%20it%20simply%2C%20as%20if%20you%20were%20describing%20the%20real%20experience%20of%20the%20product."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-zinc-800"
+              aria-label="Get AI summary from Gemini"
+            >
+              <img src="/icons/gemini.svg" alt="Gemini" className="h-7 w-7 opacity-60 invert" />
+            </a> */}
+            <a
+              href="https://www.perplexity.ai/?q=As%20a%20potential%20user%2C%20I%20want%20to%20concretely%20understand%20what%20I%20will%20receive%20with%20Windsurf%20IDE%20(windsurf.com).%0A%0ADetail%20step%20by%20step%20what%20the%20editor%20includes%3A%20what%20I%20receive%2C%20how%20Cascade%20AI%20works%2C%20how%20it%20understands%20my%20codebase%2C%20multi-file%20editing%2C%20terminal%20integration%2C%20and%20how%20it%20compares%20to%20VS%20Code%20and%20Cursor.%0A%0AExplain%20it%20simply%2C%20as%20if%20you%20were%20describing%20the%20real%20experience%20of%20the%20product."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-zinc-800"
+              aria-label="Get AI summary from Perplexity"
+            >
+              <img src="/icons/perplexity.svg" alt="Perplexity" className="h-7 w-7 opacity-60 invert" />
+            </a>
+            <a
+              href="https://x.com/i/grok?text=As%20a%20potential%20user%2C%20I%20want%20to%20concretely%20understand%20what%20I%20will%20receive%20with%20Windsurf%20IDE%20(windsurf.com).%0A%0ADetail%20step%20by%20step%20what%20the%20editor%20includes%3A%20what%20I%20receive%2C%20how%20Cascade%20AI%20works%2C%20how%20it%20understands%20my%20codebase%2C%20multi-file%20editing%2C%20terminal%20integration%2C%20and%20how%20it%20compares%20to%20VS%20Code%20and%20Cursor.%0A%0AExplain%20it%20simply%2C%20as%20if%20you%20were%20describing%20the%20real%20experience%20of%20the%20product."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-zinc-800"
+              aria-label="Get AI summary from Grok"
+            >
+              <img src="/icons/grok.svg" alt="Grok" className="h-7 w-7 opacity-60 invert" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
